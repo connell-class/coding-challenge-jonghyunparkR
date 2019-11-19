@@ -1,0 +1,34 @@
+package com.project.dao;
+
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.project.pojo.GroceryList;
+
+@Transactional
+@Repository
+public class GroceryRepo {
+	private SessionFactory sesFact;
+	
+	//insert GroceryList
+	public void insert (GroceryList gl) {
+		sesFact.getCurrentSession().save(gl);
+	}
+	public List<GroceryList> selectAll() {
+		Session ses = sesFact.getCurrentSession();
+		return ses.createQuery("from grocery_list", GroceryList.class).list();
+	}
+	
+	@Autowired
+	public GroceryRepo(SessionFactory sesFact) {
+		super();
+		this.sesFact = sesFact;
+	}
+}
